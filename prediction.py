@@ -4,6 +4,7 @@ import tensorflow as tf
 # Helper libraries
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 
 # Loading data
 mnist = tf.keras.datasets.mnist
@@ -35,11 +36,24 @@ print(val_acc)
 
 # Saving the model
 model.save('mnist.model')
-new_model = tf.keras.models.load_model('epic_num_reader.model')
+new_model = tf.keras.models.load_model('mnist.model')
 
-predictions = new_model.predict(x_test)
+# Asks for a prediction
 
-print(np.argmax(predictions[0]))
-plt.imshow(x_test[0],cmap=plt.cm.binary)
-plt.show()
+question = "y"
+
+while question != "n":
+    question = input("Do you want to make a prediction? (y/n) ")
+    if question == "y":
+        predictions = new_model.predict(x_test)
+        randomnumber = random.randint(1,10000)
+        print("I predict the following image represents this integer:", np.argmax(predictions[randomnumber]))
+        print("The correct answer is:", y_test[randomnumber])
+        plt.imshow(x_test[randomnumber],cmap=plt.cm.binary)
+        plt.show()
+    elif question == "n":
+        print("Thank you.")
+        break
+    else:
+        print("Please type in 'y' or 'n'.")
 
